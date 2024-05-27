@@ -1,17 +1,13 @@
 import React from "react";
-// import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
 import LayoutContent from "./components/layoutContent";
 
-/**
- * Todo: This description needs to be filled
- * @returns
- */
 const DefaultLayout = () => {
+  let { state } = useLocation();
+  console.log("State:", state);
   return (
-    <>
-      <LayoutContent />
-    </>
+    <>{state?.token ? <LayoutContent /> : <Navigate to="/auth/login" />}</>
   );
 };
 

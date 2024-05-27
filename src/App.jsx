@@ -4,14 +4,13 @@ import { ThemeProvider } from "@mui/material/styles";
 import colors from "./theme/colors";
 import CssBaseline from "@mui/material/CssBaseline";
 
-// import publicRoutes from "./routes/publicRoutes";
+import publicRoutes from "./routes/publicRoutes";
 import privateRoutes from "./routes/privateRoutes"; // Import the function
 
 const App = () => {
-  // Call privateRoutes() only once to get the array of routes
   const privateRouteList = privateRoutes();
 
-  const router = createBrowserRouter([...privateRouteList]); // Combine private and public routes
+  const router = createBrowserRouter([...privateRouteList, ...publicRoutes]);
 
   return (
     <ThemeProvider theme={colors}>
