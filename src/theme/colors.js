@@ -14,6 +14,10 @@ const colors = {
     primary: "#ffffff",
     secondary: "#cccccc",
   },
+  custom: {
+    black: "#000000",
+    white: "#FFFFFF",
+  },
 };
 
 export default createTheme(colors);

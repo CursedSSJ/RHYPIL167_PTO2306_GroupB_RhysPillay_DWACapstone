@@ -11,7 +11,7 @@ const LayoutNav = () => {
   return (
     <AppBar sx={style.appTopBar} position="static" color="transparent">
       <Container>
-        <Typography variant="h6"></Typography>
+        <Typography variant="h6">Nav Placeholder</Typography>
       </Container>
     </AppBar>
   );

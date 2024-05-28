@@ -8,20 +8,20 @@ export const styles = (theme) => {
       justifyContent: "center",
     },
     loginTitle: {
-      fontSize: "35px",
+      fontSize: "2.5rem",
       fontWeight: "700",
       lineHeight: "38px",
       letterSpacing: "0em",
       marginBottom: "10px",
-      color: "#FFFFFF",
+      color: theme.text.primary,
     },
     loginSubTitle: {
-      fontSize: "16px",
-      fontWeight: "500",
+      fontSize: "1.5rem",
+      fontWeight: "bold",
       lineHeight: "38px",
       letterSpacing: "0em",
       textAlign: "center",
-      color: "#FFFFFF",
+      color: theme.text.primary,
     },
     loginForm: {
       display: "flex",
@@ -38,7 +38,7 @@ export const styles = (theme) => {
       marginTop: "10px",
       marginBottom: "5px",
       fontSize: "14px",
-      color: "#FFFFFF",
+      color: theme.text.primary,
     },
     loginInputTextbox: {
       margin: "0px",
@@ -49,11 +49,11 @@ export const styles = (theme) => {
       fontSize: "18px",
       webkitAutofill: "none !important",
       WebkitBoxShadow: "none !important",
-      backgroundColor: "#FFFFFF",
+      backgroundColor: theme.primary.main,
       "& .MuiOutlinedInput-input": {
         padding: "3px 30px 3px 0px !important",
         border: "none !important",
-        color: "#FFFFFF",
+        color: theme.text.primary,
       },
       "& .MuiOutlinedInput-notchedOutline": {
         margin: "0px",
@@ -71,11 +71,14 @@ export const styles = (theme) => {
       minWidth: "80%",
       padding: "10px",
       borderRadius: "5px",
-      backgroundColor: "#FFFFFF",
-      color: "#FFFFFF",
+      backgroundColor: theme.primary.main,
+      color: theme.text.primary,
       fontSize: "18px",
       fontWeight: "600",
       cursor: "pointer",
+      ":hover": {
+        backgroundColor: theme.primary.dark,
+      },
     },
     visibilityIcon: {
       cursor: "pointer",
@@ -84,13 +87,13 @@ export const styles = (theme) => {
     warningText: {
       margin: "0px",
       padding: "0px !important",
-      color: "white",
+      color: theme.text.primary,
       fontSize: "14px",
     },
     loginForgotPassword: {
       textDecoration: "underline",
       fontSize: "16px",
-      color: "#FFFFFF",
+      color: theme.text.primary,
       cursor: "pointer",
     },
   };

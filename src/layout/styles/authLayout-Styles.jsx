@@ -21,7 +21,7 @@ export const styles = (theme) => {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: "#FFFFFF",
+      backgroundColor: "#000a13",
     },
     loginLogo: {
       width: "90%",
@@ -33,7 +33,7 @@ export const styles = (theme) => {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: "#FFFFFF",
+      backgroundColor: theme.primary.light,
     },
   };
 };
