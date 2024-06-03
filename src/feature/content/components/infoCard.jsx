@@ -121,7 +121,7 @@ const InfoCard = () => {
                   alt={podcast.title}
                 />
                 <CardContent>
-                  <Typography variant="h5" component="div">
+                  <Typography variant="h4" component="div">
                     {podcast.title}
                   </Typography>
                   <Typography variant="body2">
@@ -134,20 +134,20 @@ const InfoCard = () => {
                       </>
                     ) : (
                       <>
-                        {podcast.description.slice(0, 99)}...
+                        {podcast.description.slice(0, 100)}...
                         <Button onClick={() => toggleDescription(podcast.id)}>
                           Read More
                         </Button>
                       </>
                     )}
                   </Typography>
-                  <Typography variant="h6">
+                  <Typography variant="h5">
                     Seasons: {podcast.seasons}
                   </Typography>
-                  <Typography variant="h6">
+                  <Typography variant="h5">
                     Updated: {format(new Date(podcast.updated), "dd/MM/yyyy")}
                   </Typography>
-                  <Typography variant="h6">
+                  <Typography variant="h5">
                     Genres:
                     <Box component="span" ml={1}>
                       {podcast.genres.map((genre, index) => (
@@ -188,7 +188,7 @@ const InfoCard = () => {
                   alt={podcast.title}
                 />
                 <CardContent sx={style.infoCardContainerCardContent}>
-                  <Typography variant="h5" component="div">
+                  <Typography variant="h4" component="div">
                     {podcast.title}
                   </Typography>
                   <Typography variant="body2">
@@ -208,22 +208,21 @@ const InfoCard = () => {
                       </>
                     )}
                   </Typography>
-                  <Typography variant="h6">
+                  <Typography variant="h5">
                     Seasons: {podcast.seasons}
                   </Typography>
-                  <Typography variant="h6">
+                  <Typography variant="h5">
                     Updated: {format(new Date(podcast.updated), "dd/MM/yyyy")}
                   </Typography>
-                  <Typography variant="h6">
+                  <Typography variant="h5">
                     Genres:
                     <Box component="span" ml={1}>
                       {podcast.genres.map((genre, index) => (
                         <Chip
                           key={index}
                           label={genres[genre]}
-                          size="small"
-                          color="primary"
-                          style={{ marginRight: 4 }}
+                          size="large"
+                          style={style.infoCardContainerGenrePills}
                         />
                       ))}
                     </Box>

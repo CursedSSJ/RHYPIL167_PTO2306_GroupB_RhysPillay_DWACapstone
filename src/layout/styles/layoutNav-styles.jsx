@@ -1,16 +1,23 @@
 const styles = (theme) => {
   return {
-    appTopBar: {
-      marginBottom: "0px",
+    navBar: {
       display: "flex",
-      justifyContent: "flex-end",
-      alignItems: "center",
       flexDirection: "row",
-      height: "60px",
-      maxHeight: "60px",
-      borderBottom: `1px solid ${theme.primary.dark} !important`,
+      justifyContent: "center",
       backgroundColor: theme.primary.main,
       color: theme.text.primary,
+      width: "100%",
+      paddingTop: "1rem !important",
+      paddingBottom: "1rem !important",
+    },
+    title: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      textAlign: "center",
+      width: "80% !important",
+      fontFamily: "Montagu, Slab",
+      fontSize: "2.5rem",
     },
   };
 };

@@ -15,8 +15,7 @@ const styles = (theme) => {
     contentContainer: {
       display: "flex",
       flexDirection: "column",
-      height: "calc(100vh - 60px)",
-      minWidth: "100% !important",
+      minWidth: "100% ",
     },
   };
 };

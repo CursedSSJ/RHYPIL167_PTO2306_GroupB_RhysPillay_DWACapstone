@@ -8,7 +8,7 @@ export const styles = (theme) => {
       backgroundColor: theme.primary.light,
     },
     infoCardLoading: {
-      width: "50%",
+      width: "60%",
       margin: "auto",
       textAlign: "center",
     },
@@ -64,6 +64,10 @@ export const styles = (theme) => {
     },
     infoCardContainerCardContent: {
       minHeight: "280px",
+    },
+    infoCardContainerGenrePills: {
+      backgroundColor: theme.primary.main,
+      color: theme.text.primary,
     },
   };
 };
