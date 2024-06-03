@@ -7,6 +7,11 @@ export const styles = (theme) => {
       overflowX: "hidden",
       backgroundColor: theme.primary.light,
     },
+    infoCardLoading: {
+      width: "50%",
+      margin: "auto",
+      textAlign: "center",
+    },
     infoCardCarasoulCardContainerSlider: {
       width: "35%",
       marginBottom: "1rem",
@@ -19,13 +24,46 @@ export const styles = (theme) => {
       textAlign: "center",
     },
     infoCardContainerFilterBox: {
+      marginTop: "3rem",
       marginBottom: "1rem",
+      width: "90%",
+      marginLeft: "auto",
+      marginRight: "auto",
+      backgroundColor: theme.primary.dark,
+      "& .MuiInputBase-input": {
+        color: theme.text.primary,
+      },
+      "& .MuiOutlinedInput-root": {
+        "& fieldset": {
+          borderColor: theme.text.primary,
+        },
+        "&:hover fieldset": {
+          borderColor: theme.text.primary,
+        },
+        "&.Mui-focused fieldset": {
+          borderColor: theme.text.primary,
+        },
+      },
+      "& .MuiInputLabel-root": {
+        color: theme.text.primary,
+        "&.Mui-focused": {
+          color: theme.text.primary,
+        },
+      },
     },
-
-    // infoCardContainerGridContainer: {
-    //   maxWidth: "1200px", // Set a maximum width for the container
-    //   margin: "0 auto", // Center the container horizontally
-    //   padding: "20px", // Add padding to create spacing around the grid
-    // },
+    infoCardGridContainercard: {
+      backgroundColor: theme.primary.dark,
+      color: theme.text.primary,
+      textAlign: "center",
+    },
+    infoCardContainerGridContainer: {
+      maxWidth: "90%",
+      margin: "auto",
+      padding: "20px",
+      height: "auto",
+    },
+    infoCardContainerCardContent: {
+      minHeight: "280px",
+    },
   };
 };

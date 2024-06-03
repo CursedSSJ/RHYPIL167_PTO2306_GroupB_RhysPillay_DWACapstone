@@ -10,6 +10,8 @@ import {
   Grid,
   Button,
   TextField,
+  Chip,
+  Box,
 } from "@mui/material";
 
 import "slick-carousel/slick/slick.css";
@@ -18,6 +20,8 @@ import "slick-carousel/slick/slick-theme.css";
 import genres from "../config/genres";
 import { styles } from "../styles/infoCard-styles";
 import { useTheme } from "@mui/material/styles";
+
+import { format } from "date-fns";
 
 const InfoCard = () => {
   const [podcastData, setPodcastData] = useState([]);
@@ -72,7 +76,15 @@ const InfoCard = () => {
   }, [filter, podcastData]);
 
   if (isLoading) {
-    return <CircularProgress />;
+    return (
+      <Container sx={style.infoCardLoading}>
+        <Typography variant="h3">
+          {" "}
+          Loading...
+          <CircularProgress />
+        </Typography>
+      </Container>
+    );
   }
 
   if (error) {
@@ -101,101 +113,126 @@ const InfoCard = () => {
       <Slider {...settings} style={style.infoCardCarasoulCardContainerSlider}>
         {carouselData.map((podcast) => (
           <Container key={podcast.id} sx={style.infoCardCarasoulCardContainer}>
-            <Card>
-              <CardMedia
-                component="img"
-                image={podcast.image}
-                alt={podcast.title}
-              />
-              <CardContent>
-                <Typography variant="h6" component="div">
-                  {podcast.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {showFullDescription[podcast.id] ? (
-                    <>
-                      {podcast.description}
-                      <Button onClick={() => toggleDescription(podcast.id)}>
-                        Read Less
-                      </Button>
-                    </>
-                  ) : (
-                    <>
-                      {podcast.description.slice(0, 100)}...
-                      <Button onClick={() => toggleDescription(podcast.id)}>
-                        Read More
-                      </Button>
-                    </>
-                  )}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Seasons: {podcast.seasons}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Updated: {podcast.updated}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Genres:{" "}
-                  {podcast.genres.map((genre) => genres[genre]).join(", ")}
-                </Typography>
-              </CardContent>
-            </Card>
+            <Grid item xs={12} sm={6} md={4} key={podcast.id}>
+              <Card sx={style.infoCardGridContainercard}>
+                <CardMedia
+                  component="img"
+                  image={podcast.image}
+                  alt={podcast.title}
+                />
+                <CardContent>
+                  <Typography variant="h5" component="div">
+                    {podcast.title}
+                  </Typography>
+                  <Typography variant="body2">
+                    {showFullDescription[podcast.id] ? (
+                      <>
+                        {podcast.description}
+                        <Button onClick={() => toggleDescription(podcast.id)}>
+                          Read Less
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        {podcast.description.slice(0, 99)}...
+                        <Button onClick={() => toggleDescription(podcast.id)}>
+                          Read More
+                        </Button>
+                      </>
+                    )}
+                  </Typography>
+                  <Typography variant="h6">
+                    Seasons: {podcast.seasons}
+                  </Typography>
+                  <Typography variant="h6">
+                    Updated: {format(new Date(podcast.updated), "dd/MM/yyyy")}
+                  </Typography>
+                  <Typography variant="h6">
+                    Genres:
+                    <Box component="span" ml={1}>
+                      {podcast.genres.map((genre, index) => (
+                        <Chip
+                          key={index}
+                          label={genres[genre]}
+                          size="small"
+                          color="primary"
+                          style={{ marginRight: 4 }}
+                        />
+                      ))}
+                    </Box>
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
           </Container>
         ))}
       </Slider>
-      <TextField
-        label="Filter Podcasts"
-        variant="outlined"
-        // fullWidth
-        margin="normal"
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-        sx={style.infoCardContainerFilterBox}
-      />
+      <Container sx={style.infoCardContainerFilterBox}>
+        <TextField
+          label="Filter Podcasts"
+          value={filter}
+          fullWidth
+          onChange={(e) => setFilter(e.target.value)}
+        />
+      </Container>
       <Grid container spacing={2} sx={style.infoCardContainerGridContainer}>
-        {filteredData.map((podcast) => (
-          <Grid item xs={12} sm={6} md={4} key={podcast.id}>
-            <Card style={{ height: "100%" }}>
-              <CardMedia
-                component="img"
-                image={podcast.image}
-                alt={podcast.title}
-              />
-              <CardContent>
-                <Typography variant="h5" component="div">
-                  {podcast.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {showFullDescription[podcast.id] ? (
-                    <>
-                      {podcast.description}
-                      <Button onClick={() => toggleDescription(podcast.id)}>
-                        Read Less
-                      </Button>
-                    </>
-                  ) : (
-                    <>
-                      {podcast.description.slice(0, 100)}...
-                      <Button onClick={() => toggleDescription(podcast.id)}>
-                        Read More
-                      </Button>
-                    </>
-                  )}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Seasons: {podcast.seasons}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Updated: {podcast.updated}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Genres:{" "}
-                  {podcast.genres.map((genre) => genres[genre]).join(", ")}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
+        {filteredData.length === 0 ? (
+          <Typography variant="body1">No results found.</Typography>
+        ) : (
+          filteredData.map((podcast) => (
+            <Grid item xs={12} sm={6} md={4} key={podcast.id}>
+              <Card sx={style.infoCardGridContainercard}>
+                <CardMedia
+                  component="img"
+                  image={podcast.image}
+                  alt={podcast.title}
+                />
+                <CardContent sx={style.infoCardContainerCardContent}>
+                  <Typography variant="h5" component="div">
+                    {podcast.title}
+                  </Typography>
+                  <Typography variant="body2">
+                    {showFullDescription[podcast.id] ? (
+                      <>
+                        {podcast.description}
+                        <Button onClick={() => toggleDescription(podcast.id)}>
+                          Read Less
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        {podcast.description.slice(0, 99)}...
+                        <Button onClick={() => toggleDescription(podcast.id)}>
+                          Read More
+                        </Button>
+                      </>
+                    )}
+                  </Typography>
+                  <Typography variant="h6">
+                    Seasons: {podcast.seasons}
+                  </Typography>
+                  <Typography variant="h6">
+                    Updated: {format(new Date(podcast.updated), "dd/MM/yyyy")}
+                  </Typography>
+                  <Typography variant="h6">
+                    Genres:
+                    <Box component="span" ml={1}>
+                      {podcast.genres.map((genre, index) => (
+                        <Chip
+                          key={index}
+                          label={genres[genre]}
+                          size="small"
+                          color="primary"
+                          style={{ marginRight: 4 }}
+                        />
+                      ))}
+                    </Box>
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))
+        )}
       </Grid>
     </Container>
   );

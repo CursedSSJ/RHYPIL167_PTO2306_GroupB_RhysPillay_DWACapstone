@@ -10,6 +10,7 @@ const styles = (theme) => {
       maxHeight: "60px",
       borderBottom: `1px solid ${theme.primary.dark} !important`,
       backgroundColor: theme.primary.main,
+      color: theme.text.primary,
     },
   };
 };
