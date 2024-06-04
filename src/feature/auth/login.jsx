@@ -6,27 +6,20 @@ import {
   FormControl,
   InputAdornment,
 } from "@mui/material";
-import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import { styles } from "./styles/login-styles.jsx";
 import { VisibilityTwoTone, VisibilityOffTwoTone } from "@mui/icons-material";
 import { handlePostLogin } from "../../utils/authUtils.js";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  "https://tlnuilcktcmfqpqyhqjc.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsbnVpbGNrdGNtZnFwcXlocWpjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTY0MDU3MTcsImV4cCI6MjAzMTk4MTcxN30.gDYVfNnEWuwB1R7KIf9voKetig0tS4g2gApSCn_EToU"
-);
+import supabase from "./authClient";
 
 const LoginCard = () => {
-  let { state } = useLocation();
   const theme = useTheme();
   const style = styles(theme);
   const [warnings, setWarnings] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [visibilty, setVisibility] = useState(false);
-
+  const [visibility, setVisibility] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -34,18 +27,23 @@ const LoginCard = () => {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     setWarnings("");
-    const response = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
 
-    console.log("response", response);
-    if (response.data.session.access_token) {
-      await handlePostLogin(response, navigate);
-    } else {
-      setWarnings(response.data.message);
+    try {
+      const response = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      console.log("response", response);
+      if (response.data.session.access_token) {
+        await handlePostLogin(response, navigate);
+      }
+    } catch (error) {
+      console.error("Login error:", error.message);
+      setWarnings("Login failed. Please try again."); // Handle login error
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleSignUp = () => {
@@ -54,13 +52,8 @@ const LoginCard = () => {
 
   const handlePasswordToggle = (id) => {
     const password = document.getElementById(id);
-    if (!visibilty) {
-      password.type = "text";
-      setVisibility(true);
-    } else {
-      password.type = "password";
-      setVisibility(false);
-    }
+    setVisibility(!visibility);
+    password.type = visibility ? "password" : "text";
   };
 
   return (
@@ -88,7 +81,7 @@ const LoginCard = () => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                {visibilty ? (
+                {visibility ? (
                   <VisibilityTwoTone
                     sx={style.visibilityIcon}
                     onClick={() => handlePasswordToggle("password")}
@@ -111,12 +104,16 @@ const LoginCard = () => {
         <Button
           sx={style.signInButton}
           variant="contained"
-          onClick={(event) => handleLogin()}
+          onClick={handleLogin}
         >
           {loading ? "Signing In..." : "Sign In"}
         </Button>
       </FormControl>
-      <Typography sx={style.loginForgotPassword} onClick={() => handleSignUp()}>
+      <Typography
+        sx={style.loginForgotPassword}
+        onClick={handleSignUp}
+        style={{ cursor: "pointer" }}
+      >
         Click here to Sign Up.
       </Typography>
     </Container>

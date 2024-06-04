@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import {
   CircularProgress,
@@ -35,6 +36,8 @@ const InfoCard = () => {
   const theme = useTheme();
   const style = styles(theme);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -47,16 +50,12 @@ const InfoCard = () => {
         setPodcastData(data);
         setFilteredData(data);
 
-        // Initialize the showFullDescription state for each podcast
+        // Set the initial description state
         const initialDescriptionState = {};
         data.forEach((podcast) => {
           initialDescriptionState[podcast.id] = false;
         });
         setShowFullDescription(initialDescriptionState);
-
-        const shuffledData = podcastData.sort(() => Math.random() - 0.5);
-        const carouselPodcasts = shuffledData.slice(0, 6);
-        setCarouselData(carouselPodcasts);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -66,6 +65,15 @@ const InfoCard = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    // Check if podcastData is available and not empty before setting up the carousel data
+    if (podcastData && podcastData.length > 0) {
+      const shuffledData = [...podcastData].sort(() => Math.random() - 0.5);
+      const carouselPodcasts = shuffledData.slice(0, 6);
+      setCarouselData(carouselPodcasts);
+    }
+  }, [podcastData]);
 
   useEffect(() => {
     setFilteredData(
@@ -98,6 +106,10 @@ const InfoCard = () => {
     }));
   };
 
+  const handleCardClick = (id) => {
+    navigate(`/mainCard/${id}`);
+  };
+
   const settings = {
     dots: true,
     infinite: true,
@@ -107,12 +119,16 @@ const InfoCard = () => {
     autoplay: true,
     autoplaySpeed: 3000,
   };
-
+  console.log("carouselData: ", carouselData);
   return (
     <Container sx={style.infoCardMainContainer}>
       <Slider {...settings} style={style.infoCardCarasoulCardContainerSlider}>
         {carouselData.map((podcast) => (
-          <Container key={podcast.id} sx={style.infoCardCarasoulCardContainer}>
+          <Container
+            key={podcast.id}
+            sx={style.infoCardCarasoulCardContainer}
+            onClick={() => handleCardClick(podcast.id)}
+          >
             <Grid item xs={12} sm={6} md={4} key={podcast.id}>
               <Card sx={style.infoCardGridContainercard}>
                 <CardMedia
@@ -120,7 +136,7 @@ const InfoCard = () => {
                   image={podcast.image}
                   alt={podcast.title}
                 />
-                <CardContent>
+                <CardContent sx={style.infoCardContainerCardContent}>
                   <Typography variant="h4" component="div">
                     {podcast.title}
                   </Typography>
@@ -134,7 +150,7 @@ const InfoCard = () => {
                       </>
                     ) : (
                       <>
-                        {podcast.description.slice(0, 100)}...
+                        {podcast.description.slice(0, 99)}...
                         <Button onClick={() => toggleDescription(podcast.id)}>
                           Read More
                         </Button>
@@ -154,9 +170,8 @@ const InfoCard = () => {
                         <Chip
                           key={index}
                           label={genres[genre]}
-                          size="small"
-                          color="primary"
-                          style={{ marginRight: 4 }}
+                          size="large"
+                          style={style.infoCardContainerGenrePills}
                         />
                       ))}
                     </Box>
@@ -181,7 +196,10 @@ const InfoCard = () => {
         ) : (
           filteredData.map((podcast) => (
             <Grid item xs={12} sm={6} md={4} key={podcast.id}>
-              <Card sx={style.infoCardGridContainercard}>
+              <Card
+                sx={style.infoCardGridContainercard}
+                onClick={() => handleCardClick(podcast.id)}
+              >
                 <CardMedia
                   component="img"
                   image={podcast.image}

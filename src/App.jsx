@@ -5,17 +5,15 @@ import colors from "./theme/colors";
 import CssBaseline from "@mui/material/CssBaseline";
 
 import publicRoutes from "./routes/publicRoutes";
-import privateRoutes from "./routes/privateRoutes"; // Import the function
+import privateRoutes from "./routes/privateRoutes";
 
 const App = () => {
-  const privateRouteList = privateRoutes();
-
-  const router = createBrowserRouter([...privateRouteList, ...publicRoutes]);
+  const router = createBrowserRouter([...privateRoutes, ...publicRoutes]);
 
   return (
     <ThemeProvider theme={colors}>
       <CssBaseline />
-      <RouterProvider router={router} themeName={colors} />
+      <RouterProvider router={router} />
     </ThemeProvider>
   );
 };

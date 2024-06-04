@@ -1,5 +1,4 @@
 import React from "react";
-import AppBar from "@mui/material/AppBar";
 import { Container, Typography, IconButton } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import MicIcon from "@mui/icons-material/Mic";

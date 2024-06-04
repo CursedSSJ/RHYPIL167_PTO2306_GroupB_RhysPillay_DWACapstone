@@ -4,27 +4,18 @@ import {
   TextField,
   Typography,
   FormControl,
-  InputAdornment,
 } from "@mui/material";
-import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import { styles } from "./styles/login-styles.jsx";
-import { createClient } from "@supabase/supabase-js";
-import { Auth } from "@supabase/auth-ui-react";
-
-const supabase = createClient(
-  "https://tlnuilcktcmfqpqyhqjc.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsbnVpbGNrdGNtZnFwcXlocWpjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTY0MDU3MTcsImV4cCI6MjAzMTk4MTcxN30.gDYVfNnEWuwB1R7KIf9voKetig0tS4g2gApSCn_EToU"
-);
+import supabase from "./authClient"; // Import the single instance of GoTrueClient
 
 const SignUp = () => {
-  let { state } = useLocation();
   const theme = useTheme();
   const style = styles(theme);
   const [warnings, setWarnings] = useState(null);
   const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
 
   const handleSignup = async () => {
@@ -33,12 +24,24 @@ const SignUp = () => {
     const password = document.getElementById("password").value;
     setWarnings("");
 
-    const response = await supabase.auth.signUp({
-      email,
-      password,
-    });
+    try {
+      const { user, session, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
 
-    console.log("response", response);
+      if (error) {
+        setWarnings(error.message);
+      } else {
+        console.log("Signup successful:", user);
+        navigate("/"); // Redirect to home page or any desired location
+      }
+    } catch (error) {
+      console.error("Signup error:", error.message);
+      setWarnings("Signup failed. Please try again."); // Handle signup error
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleGoBack = () => {
@@ -71,14 +74,23 @@ const SignUp = () => {
         <Button
           sx={style.signInButton}
           variant="contained"
-          onClick={(event) => handleSignup()}
+          onClick={handleSignup}
         >
           {loading ? "Signing Up..." : "Sign Up"}
         </Button>
       </FormControl>
-      <Typography sx={style.loginForgotPassword} onClick={() => handleGoBack()}>
+      <Typography
+        sx={style.loginForgotPassword}
+        onClick={handleGoBack}
+        style={{ cursor: "pointer" }}
+      >
         Go Back
       </Typography>
+      {warnings && (
+        <Typography variant="subtitle1" color="error">
+          {warnings}
+        </Typography>
+      )}
     </Container>
   );
 };

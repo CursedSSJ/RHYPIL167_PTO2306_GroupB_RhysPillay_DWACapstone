@@ -1,13 +1,22 @@
-import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import LayoutContent from "./components/layoutContent";
+import React, { useEffect } from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 const DefaultLayout = () => {
-  let { state } = useLocation();
+  const { state } = useLocation();
 
-  return (
-    <>{state?.token ? <LayoutContent /> : <Navigate to="/auth/login" />}</>
-  );
+  // Check if the user is authenticated
+  const isAuthenticated = localStorage.getItem("token") ? true : false;
+
+  useEffect(() => {
+    // Optional: You may want to log the location state for debugging
+    console.log("Location state:", state);
+  }, [state]);
+
+  if (isAuthenticated) {
+    return <Outlet />;
+  } else {
+    return <Navigate to="/auth/login" />;
+  }
 };
 
 export default DefaultLayout;
