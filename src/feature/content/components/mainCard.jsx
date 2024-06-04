@@ -4,17 +4,16 @@ import {
   CircularProgress,
   Typography,
   Container,
-  Card,
   CardContent,
   CardMedia,
-  Grid,
   Box,
   Chip,
 } from "@mui/material";
 import { format } from "date-fns";
-import genres from "../config/genres";
 import { styles } from "../styles/mainCard-styles";
 import { useTheme } from "@mui/material/styles";
+
+import DataCard from "./dataCard";
 
 const MainCard = () => {
   const { id } = useParams();
@@ -24,8 +23,6 @@ const MainCard = () => {
 
   const theme = useTheme();
   const style = styles(theme);
-
-  console.log("id: ", id);
 
   useEffect(() => {
     const fetchPodcast = async () => {
@@ -37,7 +34,6 @@ const MainCard = () => {
           throw new Error(`Error fetching podcast data: ${response.status}`);
         }
         const data = await response.json();
-        console.log("data: ", data);
         setPodcast(data);
       } catch (error) {
         setError(error.message);
@@ -93,6 +89,7 @@ const MainCard = () => {
           </Box>
         </Typography>
       </CardContent>
+      <DataCard seasons={podcast.seasons} />
     </Container>
   );
 };
