@@ -69,5 +69,8 @@ export const styles = (theme) => {
       backgroundColor: theme.primary.main,
       color: theme.text.primary,
     },
+    infoCardMainLoaderText: {
+      color: theme.text.primary,
+    },
   };
 };

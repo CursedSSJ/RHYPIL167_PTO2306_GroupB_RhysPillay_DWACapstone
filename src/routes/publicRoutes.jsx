@@ -13,8 +13,6 @@ const publicRoutes = [
     children: [
       { index: true, element: <Login /> },
       { path: "login", element: <Login /> },
-      { path: "signUp", element: <SignUp /> },
-      { path: "logout", element: <Logout /> },
       { path: "*", element: <Error404 /> },
     ],
   },

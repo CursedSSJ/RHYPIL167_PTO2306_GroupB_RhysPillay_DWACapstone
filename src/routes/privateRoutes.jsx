@@ -10,10 +10,10 @@ const privateRoutes = [
     element: <DefaultLayout />,
     children: [
       {
-        path: "",
+        path: "content",
         element: <LayoutContent />,
         children: [
-          { path: "", element: <Content /> }, // Nested route for Content
+          { path: "", element: <Content /> },
           { path: "mainCard/:id", element: <MainCard /> },
         ],
       },

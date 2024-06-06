@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import {
   Container,
+  Box,
   Card,
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Typography,
+  FormControl,
   Select,
   MenuItem,
+  InputLabel,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -21,24 +24,30 @@ const DataCard = ({ seasons }) => {
 
   return (
     <>
-      <Select
-        value={selectedSeason === null ? "" : selectedSeason}
-        onChange={(e) => {
-          const value = e.target.value === "" ? null : e.target.value;
-          setSelectedSeason(value);
-        }}
-      >
-        <MenuItem value="">Select Season</MenuItem>
-        {seasons.map((season, index) => (
-          <MenuItem key={index} value={index}>
-            Season {index + 1}
-          </MenuItem>
-        ))}
-      </Select>
+      <Box sx={style.seasonDropDownBox}>
+        <FormControl sx={style.seasonDropDown}>
+          <InputLabel sx={style.seasonDropDownText}>Select Season</InputLabel>
+          <Select
+            sx={style.seasonDropDownText}
+            label="Select Season"
+            value={selectedSeason === null ? "" : selectedSeason}
+            onChange={(e) => {
+              const value = e.target.value === "" ? null : e.target.value;
+              setSelectedSeason(value);
+            }}
+          >
+            {seasons.map((season, index) => (
+              <MenuItem key={index} value={index}>
+                {"Season " + (index + 1)}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+
       <Container sx={style.dataCardContainer}>
-        {/* Display selected season */}
         {selectedSeason !== null && (
-          <Card>
+          <Card style={style.episodeBackground}>
             <img
               style={style.dataCardImage}
               src={seasons[selectedSeason].image}

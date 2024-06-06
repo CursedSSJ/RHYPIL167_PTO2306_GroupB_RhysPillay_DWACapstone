@@ -1,6 +1,7 @@
 const styles = (theme) => {
   return {
     mainContainer: {
+      backgroundColor: theme.primary.light,
       padding: "0px !important",
       display: "flex",
       flexDirection: "column",

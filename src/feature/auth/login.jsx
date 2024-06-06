@@ -36,6 +36,8 @@ const LoginCard = () => {
 
       console.log("response", response);
       if (response.data.session.access_token) {
+        // Store the access token in local storage
+        localStorage.setItem("authToken", response.data.session.access_token);
         await handlePostLogin(response, navigate);
       }
     } catch (error) {

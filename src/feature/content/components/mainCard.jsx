@@ -34,6 +34,7 @@ const MainCard = () => {
           throw new Error(`Error fetching podcast data: ${response.status}`);
         }
         const data = await response.json();
+        console.log("podcast data: ", data);
         setPodcast(data);
       } catch (error) {
         setError(error.message);
@@ -48,7 +49,7 @@ const MainCard = () => {
   if (isLoading) {
     return (
       <Container sx={style.mainCardLoading}>
-        <Typography variant="h3">
+        <Typography variant="h3" sx={style.mainLoaderText}>
           Loading...
           <CircularProgress />
         </Typography>
@@ -62,34 +63,21 @@ const MainCard = () => {
 
   return (
     <Container sx={style.mainCardContainer}>
-      <CardMedia
-        sx={style.mainCardContainerCardContent}
-        component="img"
-        image={podcast.image}
-        alt={podcast.title}
-      />
-      <CardContent>
-        <Typography variant="h4">{podcast.title}</Typography>
-        <Typography variant="body2">{podcast.description}</Typography>
-        {/* <Typography variant="h5">Seasons: {podcast.seasons}</Typography> */}
-        <Typography variant="h5">
-          Updated: {format(new Date(podcast.updated), "dd/MM/yyyy")}
-        </Typography>
-        <Typography variant="h5">
-          Genres:
-          <Box component="span" ml={1}>
-            {podcast.genres.map((genre, index) => (
-              <Chip
-                key={index}
-                label={genre}
-                size="large"
-                style={style.mainCardGenrePills}
-              />
-            ))}
-          </Box>
-        </Typography>
-      </CardContent>
-      <DataCard seasons={podcast.seasons} />
+      <Container sx={style.mainCardInnerContainer}>
+        <CardMedia
+          sx={style.mainCardContainerCardContent}
+          component="img"
+          image={podcast.image}
+          alt={podcast.title}
+        />
+        <CardContent>
+          <Typography sx={style.mainCardTitle}>{podcast.title}</Typography>
+          <Typography sx={style.mainCardSummary}>
+            {podcast.description}
+          </Typography>
+        </CardContent>
+        <DataCard seasons={podcast.seasons} />
+      </Container>
     </Container>
   );
 };

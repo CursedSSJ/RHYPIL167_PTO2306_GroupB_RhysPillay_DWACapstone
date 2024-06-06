@@ -8,17 +8,22 @@ export const styles = (theme) => {
       backgroundColor: theme.primary.light,
       textAlign: "center",
       color: theme.text.primary,
+      paddingLeft: "3rem !important",
+      paddingRight: "3rem !important",
+    },
+    mainCardInnerContainer: {
+      border: `2px solid ${theme.primary.dark}`,
+      width: "90%",
+      marginLeft: "auto",
+      marginRight: "auto",
+      marginTop: "2rem",
+      marginBottom: "5rem",
+      padding: "2rem !important",
     },
     mainCardLoading: {
       width: "60%",
       margin: "auto",
       textAlign: "center",
-    },
-    mainCardContainerGridContainer: {
-      maxWidth: "90%",
-      margin: "auto",
-      padding: "20px",
-      height: "auto",
     },
     mainCardContainerCardContent: {
       width: "200px",
@@ -26,8 +31,13 @@ export const styles = (theme) => {
       marginRight: "auto",
       marginTop: "2rem",
     },
-    mainCardGenrePills: {
-      backgroundColor: theme.primary.main,
+    mainCardTitle: {
+      fontSize: "3rem",
+    },
+    mainCardSummary: {
+      fontSize: "1rem",
+    },
+    mainLoaderText: {
       color: theme.text.primary,
     },
   };

@@ -86,7 +86,7 @@ const InfoCard = () => {
   if (isLoading) {
     return (
       <Container sx={style.infoCardLoading}>
-        <Typography variant="h3">
+        <Typography variant="h3" sx={style.infoCardMainLoaderText}>
           {" "}
           Loading...
           <CircularProgress />
@@ -107,7 +107,8 @@ const InfoCard = () => {
   };
 
   const handleCardClick = (id) => {
-    navigate(`/mainCard/${id}`);
+    console.log("navigating...");
+    navigate(`/content/mainCard/${id}`);
   };
 
   const settings = {
