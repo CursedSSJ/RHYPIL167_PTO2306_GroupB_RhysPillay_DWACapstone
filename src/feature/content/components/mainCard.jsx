@@ -76,7 +76,7 @@ const MainCard = () => {
             {podcast.description}
           </Typography>
         </CardContent>
-        <DataCard seasons={podcast.seasons} />
+        <DataCard seasons={podcast.seasons} updated={podcast.updated} />
       </Container>
     </Container>
   );

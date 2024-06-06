@@ -34,6 +34,7 @@ const InfoCard = () => {
   const [carouselData, setCarouselData] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortDateOrder, setSortDateOrder] = useState("asc");
+  const [selectedGenre, setSelectedGenre] = useState(null); // New state for selected genre
 
   const theme = useTheme();
   const style = styles(theme);
@@ -52,7 +53,6 @@ const InfoCard = () => {
         setPodcastData(data);
         setFilteredData(data);
 
-        // Set the initial description state
         const initialDescriptionState = {};
         data.forEach((podcast) => {
           initialDescriptionState[podcast.id] = false;
@@ -77,12 +77,14 @@ const InfoCard = () => {
   }, [podcastData]);
 
   useEffect(() => {
-    setFilteredData(
-      podcastData.filter((podcast) =>
-        podcast.title.toLowerCase().includes(filter.toLowerCase())
-      )
-    );
-  }, [filter, podcastData]);
+    const genreFilter = selectedGenre
+      ? podcastData.filter((podcast) => podcast.genres.includes(selectedGenre))
+      : podcastData.filter((podcast) =>
+          podcast.title.toLowerCase().includes(filter.toLowerCase())
+        );
+
+    setFilteredData(genreFilter);
+  }, [filter, podcastData, selectedGenre]);
 
   const toggleDescription = (id) => {
     setShowFullDescription((prev) => ({
@@ -92,7 +94,6 @@ const InfoCard = () => {
   };
 
   const handleCardClick = (id) => {
-    console.log("navigating...");
     navigate(`/content/mainCard/${id}`);
   };
 
@@ -132,6 +133,10 @@ const InfoCard = () => {
       sortDateOrder === "asc" ? sortedData : sortedData.reverse();
     setFilteredData(newFilteredData);
     setSortDateOrder(sortDateOrder === "asc" ? "desc" : "asc");
+  };
+
+  const handleGenreClick = (genre) => {
+    setSelectedGenre(genre === selectedGenre ? null : genre);
   };
 
   return (
@@ -183,6 +188,7 @@ const InfoCard = () => {
                           label={genres[genre]}
                           size="large"
                           style={style.infoCardContainerGenrePills}
+                          onClick={() => handleGenreClick(genre)}
                         />
                       ))}
                     </Box>
@@ -199,6 +205,7 @@ const InfoCard = () => {
           value={filter}
           fullWidth
           onChange={(e) => setFilter(e.target.value)}
+          disabled={!!selectedGenre} // Disable input when a genre is selected
         />
       </Container>
       <Button onClick={handleSortButtonClick}>
@@ -251,6 +258,7 @@ const InfoCard = () => {
                         label={genres[genre]}
                         size="large"
                         style={style.infoCardContainerGenrePills}
+                        onClick={() => handleGenreClick(genre)}
                       />
                     ))}
                   </Box>

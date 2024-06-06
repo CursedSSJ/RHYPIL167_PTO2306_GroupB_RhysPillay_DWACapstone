@@ -19,7 +19,7 @@ import { styles } from "../styles/dataCard-styles";
 import { useTheme } from "@mui/material/styles";
 import supabase from "../../auth/authClient";
 
-const DataCard = ({ seasons }) => {
+const DataCard = ({ seasons, updated }) => {
   const [userId, setUserId] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState(null);
   const [playbackData, setPlaybackData] = useState([]);
@@ -87,6 +87,7 @@ const DataCard = ({ seasons }) => {
           episode: episode.episode,
           audio_file: episode.file,
           created_at: now,
+          date_updated: updated,
         },
       ]);
     }
@@ -129,8 +130,6 @@ const DataCard = ({ seasons }) => {
     console.log("Updating playback position:", currentTime);
 
     const newAudio = !audioTime[currentTime];
-
-    console.log("Function hittt");
 
     const updatedAudioTime = { ...audioTime };
     updatedAudioTime[episode.title] = currentTime;
