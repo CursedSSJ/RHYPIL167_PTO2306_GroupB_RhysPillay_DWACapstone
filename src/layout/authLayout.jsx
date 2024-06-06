@@ -10,11 +10,7 @@ const LoginPage = () => {
   return (
     <Container sx={style.mainContainerAuth}>
       <Container sx={style.loginLeftDiv}>
-        <img
-          src="../public/assets/Login-Image.png"
-          alt="Logo"
-          sx={style.loginLogo}
-        />
+        <img src="/assets/Login-Image.png" alt="Logo" sx={style.loginLogo} />
       </Container>
       <Container sx={style.loginRightDiv}>
         <Outlet />
