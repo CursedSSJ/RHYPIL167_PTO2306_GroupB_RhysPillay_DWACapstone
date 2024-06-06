@@ -29,20 +29,25 @@ const LoginCard = () => {
     setWarnings("");
 
     try {
-      const response = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      console.log("response", response);
-      if (response.data.session.access_token) {
-        // Store the access token in local storage
-        localStorage.setItem("authToken", response.data.session.access_token);
-        await handlePostLogin(response, navigate);
+      console.log("data: ", data);
+
+      if (error) {
+        setWarnings(error.message);
+        setLoading(false);
+      } else {
+        if (data.user) {
+          await handlePostLogin(data, navigate);
+        }
       }
     } catch (error) {
       console.error("Login error:", error.message);
-      setWarnings("Login failed. Please try again."); // Handle login error
+      setWarnings("Login failed. Please try again.");
+      setLoading(false);
     } finally {
       setLoading(false);
     }

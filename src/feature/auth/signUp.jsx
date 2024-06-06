@@ -16,13 +16,22 @@ const SignUp = () => {
   const style = styles(theme);
   const [warnings, setWarnings] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleSignup = async () => {
     setLoading(true);
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirm-password").value;
     setWarnings("");
+    setSuccess(false);
+
+    if (password !== confirmPassword) {
+      setWarnings("Passwords do not match.");
+      setLoading(false);
+      return;
+    }
 
     try {
       const { user, session, error } = await supabase.auth.signUp({
@@ -32,13 +41,17 @@ const SignUp = () => {
 
       if (error) {
         setWarnings(error.message);
+        setLoading(false);
       } else {
-        console.log("Signup successful:", user);
-        navigate("/"); // Redirect to home page or any desired location
+        setSuccess(true);
+        setTimeout(() => {
+          navigate("/auth/login");
+        }, 2000); // 2-second delay before navigating
       }
     } catch (error) {
       console.error("Signup error:", error.message);
-      setWarnings("Signup failed. Please try again."); // Handle signup error
+      setWarnings("Signup failed. Please try again.");
+      setLoading(false);
     } finally {
       setLoading(false);
     }
@@ -71,6 +84,14 @@ const SignUp = () => {
           variant="outlined"
           placeholder="Password"
         />
+        <Typography sx={style.loginInputLabel}>Confirm Password</Typography>
+        <TextField
+          sx={style.loginInputTextbox}
+          type="password"
+          id="confirm-password"
+          variant="outlined"
+          placeholder="Confirm Password"
+        />
         <Button
           sx={style.signInButton}
           variant="contained"
@@ -89,6 +110,11 @@ const SignUp = () => {
       {warnings && (
         <Typography variant="subtitle1" color="error">
           {warnings}
+        </Typography>
+      )}
+      {success && (
+        <Typography variant="subtitle1" color="success">
+          Signup successful! Redirecting to login...
         </Typography>
       )}
     </Container>

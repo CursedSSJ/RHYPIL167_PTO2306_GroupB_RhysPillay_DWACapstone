@@ -34,7 +34,12 @@ const LayoutNav = () => {
         Podyssey
         <MicIcon />
       </Typography>
-      <IconButton edge="end" color="inherit" aria-label="favorites">
+      <IconButton
+        edge="end"
+        color="inherit"
+        aria-label="favorites"
+        onClick={() => navigate("/content/favourites")}
+      >
         <FavoriteIcon />
       </IconButton>
       {/* <IconButton edge="end" color="inherit" aria-label="profile">

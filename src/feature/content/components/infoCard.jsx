@@ -32,6 +32,8 @@ const InfoCard = () => {
   const [filter, setFilter] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [carouselData, setCarouselData] = useState([]);
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortDateOrder, setSortDateOrder] = useState("asc");
 
   const theme = useTheme();
   const style = styles(theme);
@@ -67,7 +69,6 @@ const InfoCard = () => {
   }, []);
 
   useEffect(() => {
-    // Check if podcastData is available and not empty before setting up the carousel data
     if (podcastData && podcastData.length > 0) {
       const shuffledData = [...podcastData].sort(() => Math.random() - 0.5);
       const carouselPodcasts = shuffledData.slice(0, 6);
@@ -82,22 +83,6 @@ const InfoCard = () => {
       )
     );
   }, [filter, podcastData]);
-
-  if (isLoading) {
-    return (
-      <Container sx={style.infoCardLoading}>
-        <Typography variant="h3" sx={style.infoCardMainLoaderText}>
-          {" "}
-          Loading...
-          <CircularProgress />
-        </Typography>
-      </Container>
-    );
-  }
-
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
 
   const toggleDescription = (id) => {
     setShowFullDescription((prev) => ({
@@ -120,22 +105,47 @@ const InfoCard = () => {
     autoplay: true,
     autoplaySpeed: 3000,
   };
-  console.log("carouselData: ", carouselData);
+
+  const handleSortButtonClick = () => {
+    const sortedData = [...filteredData].sort((a, b) => {
+      const titleA = a.title.toLowerCase();
+      const titleB = b.title.toLowerCase();
+      if (titleA < titleB) return -1;
+      if (titleA > titleB) return 1;
+      return 0;
+    });
+
+    const newFilteredData =
+      sortOrder === "asc" ? sortedData.reverse() : sortedData;
+    setFilteredData(newFilteredData);
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+  };
+
+  const handleDateSortButtonClick = () => {
+    const sortedData = [...filteredData].sort((a, b) => {
+      const dateA = new Date(a.updated);
+      const dateB = new Date(b.updated);
+      return dateA - dateB;
+    });
+
+    const newFilteredData =
+      sortDateOrder === "asc" ? sortedData : sortedData.reverse();
+    setFilteredData(newFilteredData);
+    setSortDateOrder(sortDateOrder === "asc" ? "desc" : "asc");
+  };
+
   return (
     <Container sx={style.infoCardMainContainer}>
       <Slider {...settings} style={style.infoCardCarasoulCardContainerSlider}>
         {carouselData.map((podcast) => (
-          <Container
-            key={podcast.id}
-            sx={style.infoCardCarasoulCardContainer}
-            onClick={() => handleCardClick(podcast.id)}
-          >
+          <Container key={podcast.id} sx={style.infoCardCarasoulCardContainer}>
             <Grid item xs={12} sm={6} md={4} key={podcast.id}>
               <Card sx={style.infoCardGridContainercard}>
                 <CardMedia
                   component="img"
                   image={podcast.image}
                   alt={podcast.title}
+                  onClick={() => handleCardClick(podcast.id)}
                 />
                 <CardContent sx={style.infoCardContainerCardContent}>
                   <Typography variant="h4" component="div">
@@ -191,66 +201,64 @@ const InfoCard = () => {
           onChange={(e) => setFilter(e.target.value)}
         />
       </Container>
+      <Button onClick={handleSortButtonClick}>
+        {sortOrder === "asc" ? "Sort A-Z" : "Sort Z-A"}
+      </Button>
+      <Button onClick={handleDateSortButtonClick}>
+        {sortDateOrder === "asc" ? "Sort Oldest First" : "Sort Newest First"}
+      </Button>
       <Grid container spacing={2} sx={style.infoCardContainerGridContainer}>
-        {filteredData.length === 0 ? (
-          <Typography variant="body1">No results found.</Typography>
-        ) : (
-          filteredData.map((podcast) => (
-            <Grid item xs={12} sm={6} md={4} key={podcast.id}>
-              <Card
-                sx={style.infoCardGridContainercard}
+        {filteredData.map((podcast) => (
+          <Grid item xs={12} sm={6} md={4} key={podcast.id}>
+            <Card sx={style.infoCardGridContainercard}>
+              <CardMedia
+                component="img"
+                image={podcast.image}
+                alt={podcast.title}
                 onClick={() => handleCardClick(podcast.id)}
-              >
-                <CardMedia
-                  component="img"
-                  image={podcast.image}
-                  alt={podcast.title}
-                />
-                <CardContent sx={style.infoCardContainerCardContent}>
-                  <Typography variant="h4" component="div">
-                    {podcast.title}
-                  </Typography>
-                  <Typography variant="body2">
-                    {showFullDescription[podcast.id] ? (
-                      <>
-                        {podcast.description}
-                        <Button onClick={() => toggleDescription(podcast.id)}>
-                          Read Less
-                        </Button>
-                      </>
-                    ) : (
-                      <>
-                        {podcast.description.slice(0, 99)}...
-                        <Button onClick={() => toggleDescription(podcast.id)}>
-                          Read More
-                        </Button>
-                      </>
-                    )}
-                  </Typography>
-                  <Typography variant="h5">
-                    Seasons: {podcast.seasons}
-                  </Typography>
-                  <Typography variant="h5">
-                    Updated: {format(new Date(podcast.updated), "dd/MM/yyyy")}
-                  </Typography>
-                  <Typography variant="h5">
-                    Genres:
-                    <Box component="span" ml={1}>
-                      {podcast.genres.map((genre, index) => (
-                        <Chip
-                          key={index}
-                          label={genres[genre]}
-                          size="large"
-                          style={style.infoCardContainerGenrePills}
-                        />
-                      ))}
-                    </Box>
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))
-        )}
+              />
+              <CardContent sx={style.infoCardContainerCardContent}>
+                <Typography variant="h4" component="div">
+                  {podcast.title}
+                </Typography>
+                <Typography variant="body2">
+                  {showFullDescription[podcast.id] ? (
+                    <>
+                      {podcast.description}
+                      <Button onClick={() => toggleDescription(podcast.id)}>
+                        Read Less
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      {podcast.description.slice(0, 99)}...
+                      <Button onClick={() => toggleDescription(podcast.id)}>
+                        Read More
+                      </Button>
+                    </>
+                  )}
+                </Typography>
+                <Typography variant="h5">Seasons: {podcast.seasons}</Typography>
+                <Typography variant="h5">
+                  Updated: {format(new Date(podcast.updated), "dd/MM/yyyy")}
+                </Typography>
+                <Typography variant="h5">
+                  Genres:
+                  <Box component="span" ml={1}>
+                    {podcast.genres.map((genre, index) => (
+                      <Chip
+                        key={index}
+                        label={genres[genre]}
+                        size="large"
+                        style={style.infoCardContainerGenrePills}
+                      />
+                    ))}
+                  </Box>
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
       </Grid>
     </Container>
   );
