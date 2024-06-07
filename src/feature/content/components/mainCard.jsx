@@ -6,10 +6,8 @@ import {
   Container,
   CardContent,
   CardMedia,
-  Box,
-  Chip,
 } from "@mui/material";
-import { format } from "date-fns";
+
 import { styles } from "../styles/mainCard-styles";
 import { useTheme } from "@mui/material/styles";
 

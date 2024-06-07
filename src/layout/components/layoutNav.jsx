@@ -7,7 +7,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { useNavigate } from "react-router-dom";
 
-import styles from "../styles/layoutNav-styles";
+import { styles } from "../styles/layoutNav-styles";
 import { useTheme } from "@mui/material/styles";
 
 const LayoutNav = () => {
@@ -27,31 +27,31 @@ const LayoutNav = () => {
         color="inherit"
         aria-label="home"
         onClick={() => navigate("/content")}
+        sx={style.iconBox}
       >
-        <HomeIcon />
+        <HomeIcon style={style.icon} />
       </IconButton>
-      <Typography variant="h6" sx={style.title}>
+      <Typography sx={style.title}>
         Podyssey
-        <MicIcon />
+        <MicIcon style={style.icon} />
       </Typography>
       <IconButton
         edge="end"
         color="inherit"
         aria-label="favorites"
         onClick={() => navigate("/content/favourites")}
+        sx={style.iconBox}
       >
-        <FavoriteIcon />
+        <FavoriteIcon style={style.icon} />
       </IconButton>
-      {/* <IconButton edge="end" color="inherit" aria-label="profile">
-        <AccountCircleIcon />
-      </IconButton> */}
       <IconButton
         edge="end"
         color="inherit"
         aria-label="logout"
         onClick={handleLogout}
+        sx={style.iconBox}
       >
-        <ExitToAppIcon />
+        <ExitToAppIcon style={style.icon} />
       </IconButton>
     </Container>
   );

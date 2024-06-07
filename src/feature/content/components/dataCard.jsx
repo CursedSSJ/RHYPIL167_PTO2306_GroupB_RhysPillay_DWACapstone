@@ -51,7 +51,6 @@ const DataCard = ({ seasons, updated }) => {
       console.log("data: ", data);
 
       if (data) {
-        // Set the state with favorite episodes
         const favoriteEpisodes = {};
         data.forEach((episode) => {
           favoriteEpisodes[episode.title] = true;
@@ -66,8 +65,6 @@ const DataCard = ({ seasons, updated }) => {
   const handleFavorite = async (image, episode, season) => {
     const episodeTitle = episode.title;
     const newIsFavorited = !favorites[episodeTitle];
-
-    console.log("Function hittt");
 
     const updatedFavorites = { ...favorites };
     updatedFavorites[episodeTitle] = newIsFavorited;

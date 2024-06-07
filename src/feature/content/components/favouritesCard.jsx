@@ -10,7 +10,6 @@ import {
 import { styles } from "../styles/favouriteCard-styles";
 import { useTheme } from "@mui/material/styles";
 import supabase from "../../auth/authClient";
-
 import { format } from "date-fns";
 
 const FavoriteEpisodes = () => {
@@ -20,6 +19,7 @@ const FavoriteEpisodes = () => {
   const [error, setError] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortDateOrder, setSortDateOrder] = useState("asc");
+  const [publicUrl, setPublicUrl] = useState(""); // State to hold the generated public URL
 
   const theme = useTheme();
   const style = styles(theme);
@@ -45,18 +45,28 @@ const FavoriteEpisodes = () => {
 
         if (data) {
           setFavoriteEpisodes(data);
-          setIsLoading(false); // Set loading state to false after successful fetch
+          setIsLoading(false);
         }
       } catch (error) {
         console.error("Error fetching favorite episodes:", error);
         setError(error.message);
-        setIsLoading(false); // Set loading state to false on error
+        setIsLoading(false);
       }
     };
 
     fetchFavoriteEpisodes();
   }, [userId]);
 
+  const generatePublicUrl = () => {
+    // Generate a unique identifier for the user's favorites (you can use userId)
+    const userIdParam = userId ? `userId=${userId}` : "";
+    // Construct the public URL with the query parameter
+    const url = `https://podysseyapp.netlify.app/content/favourites?${userIdParam}`;
+    // Set the public URL state with the generated URL
+    setPublicUrl(url);
+  };
+
+  // Function to remove favorite
   const removeFavorite = async (episodeId) => {
     try {
       const { error } = await supabase
@@ -108,8 +118,8 @@ const FavoriteEpisodes = () => {
 
   if (isLoading) {
     return (
-      <Container sx={style.infoCardLoading}>
-        <Typography variant="h3" sx={style.infoCardMainLoaderText}>
+      <Container sx={style.favouriteCardLoading}>
+        <Typography variant="h3" sx={style.favouriteCardLoaderText}>
           {" "}
           Loading...
           <CircularProgress />
@@ -123,54 +133,87 @@ const FavoriteEpisodes = () => {
       <Typography sx={style.favouriteCardHeading}>
         Your Favourite Episodes
       </Typography>
-      <Button onClick={handleSortButtonClick}>
-        {sortOrder === "asc" ? "Sort A-Z" : "Sort Z-A"}
-      </Button>
-      <Button onClick={handleDateSortButtonClick}>
-        {sortDateOrder === "asc" ? "Sort Oldest First" : "Sort Newest First"}
-      </Button>
-      {favoriteEpisodes.length === 0 ? (
+      {publicUrl && (
         <Typography variant="body1">
-          You haven't favourited any episodes yet.
+          Share your favorites: <a href={publicUrl}>{publicUrl}</a>
         </Typography>
+      )}
+      {isLoading ? (
+        <Container sx={style.favouriteCardLoading}>
+          <Typography variant="h3" sx={style.favouriteCardLoaderText}>
+            {" "}
+            Loading...
+            <CircularProgress />
+          </Typography>
+        </Container>
       ) : (
-        favoriteEpisodes.map((episode, index) => (
-          <Card key={index} sx={style.favouriteCardEpisodeContainer}>
-            <img
-              style={style.favouriteCardImage}
-              src={episode.image}
-              alt={"Episode Image"}
-            />
-            <CardContent>
-              <Typography variant="h3">{episode.title}</Typography>
-              <Typography variant="h4">
-                Season {episode.season}, Episode {episode.episode}
-              </Typography>
-              <Typography variant="h5">
-                Date Favourited:{" "}
-                {format(new Date(episode.created_at), "dd/MM/yyyy")}
-              </Typography>
-              <Typography variant="h5">
-                Date Updated:{" "}
-                {format(new Date(episode.date_updated), "dd/MM/yyyy")}
-              </Typography>
-              <Typography variant="body2">{episode.description}</Typography>
-              <div>
-                <audio controls>
-                  <source src={episode.audio_file} type="audio/mpeg" />
-                  Your browser does not support the audio element.
-                </audio>
-              </div>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => removeFavorite(episode.id)}
-              >
-                Remove from Favorites
-              </Button>
-            </CardContent>
-          </Card>
-        ))
+        <>
+          <Container sx={style.favouriteCardControllers}>
+            <Button
+              onClick={generatePublicUrl}
+              sx={style.favouriteCardContainerButton}
+            >
+              Generate Public URL
+            </Button>
+            <Button
+              onClick={handleSortButtonClick}
+              sx={style.favouriteCardContainerButton}
+            >
+              {sortOrder === "asc" ? "Sort A-Z" : "Sort Z-A"}
+            </Button>
+            <Button
+              onClick={handleDateSortButtonClick}
+              sx={style.favouriteCardContainerButton}
+            >
+              {sortDateOrder === "asc"
+                ? "Sort Oldest First"
+                : "Sort Newest First"}
+            </Button>
+          </Container>
+          {favoriteEpisodes.length === 0 ? (
+            <Typography variant="body1">
+              You haven't favourited any episodes yet.
+            </Typography>
+          ) : (
+            favoriteEpisodes.map((episode, index) => (
+              <Card key={index} sx={style.favouriteCardEpisodeContainer}>
+                <img
+                  style={style.favouriteCardImage}
+                  src={episode.image}
+                  alt={"Episode Image"}
+                />
+                <CardContent>
+                  <Typography variant="h3">{episode.title}</Typography>
+                  <Typography variant="h4">
+                    Season {episode.season}, Episode {episode.episode}
+                  </Typography>
+                  <Typography variant="h5">
+                    Date Favourited:{" "}
+                    {format(new Date(episode.created_at), "dd/MM/yyyy")}
+                  </Typography>
+                  <Typography variant="h5">
+                    Date Updated:{" "}
+                    {format(new Date(episode.date_updated), "dd/MM/yyyy")}
+                  </Typography>
+                  <Typography variant="body2">{episode.description}</Typography>
+                  <div>
+                    <audio controls>
+                      <source src={episode.audio_file} type="audio/mpeg" />
+                      Your browser does not support the audio element.
+                    </audio>
+                  </div>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => removeFavorite(episode.id)}
+                  >
+                    Remove from Favorites
+                  </Button>
+                </CardContent>
+              </Card>
+            ))
+          )}
+        </>
       )}
     </Container>
   );

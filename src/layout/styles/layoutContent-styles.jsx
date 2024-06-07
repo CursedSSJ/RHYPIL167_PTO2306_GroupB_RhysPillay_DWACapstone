@@ -12,6 +12,7 @@ const styles = (theme) => {
         padding: "0px",
       },
       margin: "0px",
+      overflowX: "hidden",
     },
     contentContainer: {
       display: "flex",

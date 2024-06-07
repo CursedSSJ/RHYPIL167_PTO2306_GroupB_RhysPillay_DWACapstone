@@ -143,9 +143,9 @@ const InfoCard = () => {
     <Container sx={style.infoCardMainContainer}>
       <Slider {...settings} style={style.infoCardCarasoulCardContainerSlider}>
         {carouselData.map((podcast) => (
-          <Container key={podcast.id} sx={style.infoCardCarasoulCardContainer}>
+          <Container key={podcast.id}>
             <Grid item xs={12} sm={6} md={4} key={podcast.id}>
-              <Card sx={style.infoCardGridContainercard}>
+              <Card sx={style.infoCardCarasoulCardContainer}>
                 <CardMedia
                   component="img"
                   image={podcast.image}
@@ -199,21 +199,27 @@ const InfoCard = () => {
           </Container>
         ))}
       </Slider>
-      <Container sx={style.infoCardContainerFilterBox}>
+      <Container sx={style.infoCardContainerControllers}>
         <TextField
+          sx={style.infoCardContainerFilterBox}
           label="Filter Podcasts"
           value={filter}
-          fullWidth
           onChange={(e) => setFilter(e.target.value)}
           disabled={!!selectedGenre} // Disable input when a genre is selected
         />
+        <Button
+          sx={style.infoCardContainerButton}
+          onClick={handleSortButtonClick}
+        >
+          {sortOrder === "asc" ? "Sort A-Z" : "Sort Z-A"}
+        </Button>
+        <Button
+          sx={style.infoCardContainerButton}
+          onClick={handleDateSortButtonClick}
+        >
+          {sortDateOrder === "asc" ? "Sort Oldest First" : "Sort Newest First"}
+        </Button>
       </Container>
-      <Button onClick={handleSortButtonClick}>
-        {sortOrder === "asc" ? "Sort A-Z" : "Sort Z-A"}
-      </Button>
-      <Button onClick={handleDateSortButtonClick}>
-        {sortDateOrder === "asc" ? "Sort Oldest First" : "Sort Newest First"}
-      </Button>
       <Grid container spacing={2} sx={style.infoCardContainerGridContainer}>
         {filteredData.map((podcast) => (
           <Grid item xs={12} sm={6} md={4} key={podcast.id}>
@@ -257,7 +263,7 @@ const InfoCard = () => {
                         key={index}
                         label={genres[genre]}
                         size="large"
-                        style={style.infoCardContainerGenrePills}
+                        sx={style.infoCardContainerGenrePills}
                         onClick={() => handleGenreClick(genre)}
                       />
                     ))}

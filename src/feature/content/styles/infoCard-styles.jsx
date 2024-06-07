@@ -13,7 +13,6 @@ export const styles = (theme) => {
       textAlign: "center",
     },
     infoCardCarasoulCardContainerSlider: {
-      width: "35%",
       marginBottom: "1rem",
       marginLeft: "auto",
       marginRight: "auto",
@@ -22,13 +21,47 @@ export const styles = (theme) => {
     infoCardCarasoulCardContainer: {
       padding: "1rem",
       textAlign: "center",
+      maxWidth: "350px",
+      margin: "auto",
+      padding: "20px",
+      height: "auto",
+      border: `2px solid ${theme.primary.dark}`,
     },
-    infoCardContainerFilterBox: {
+    infoCardGridContainercard: {
+      backgroundColor: theme.primary.dark,
+      color: theme.text.primary,
+      textAlign: "center",
+    },
+    infoCardContainerGridContainer: {
+      maxWidth: "90%",
+      margin: "auto",
+      padding: "20px",
+      height: "auto",
+      border: `2px solid ${theme.primary.dark}`,
+    },
+    infoCardContainerCardContent: {
+      minHeight: "280px",
+    },
+    infoCardContainerGenrePills: {
+      backgroundColor: theme.primary.main,
+      color: theme.text.primary,
+      "&:focus": {
+        backgroundColor: theme.primary.light,
+      },
+    },
+    infoCardMainLoaderText: {
+      color: theme.text.primary,
+    },
+    infoCardContainerControllers: {
+      display: "flex",
+      flexDirection: "row",
       marginTop: "3rem",
       marginBottom: "1rem",
       width: "90%",
       marginLeft: "auto",
       marginRight: "auto",
+    },
+    infoCardContainerFilterBox: {
       backgroundColor: theme.primary.dark,
       "& .MuiInputBase-input": {
         color: theme.text.primary,
@@ -51,26 +84,11 @@ export const styles = (theme) => {
         },
       },
     },
-    infoCardGridContainercard: {
+    infoCardContainerButton: {
       backgroundColor: theme.primary.dark,
       color: theme.text.primary,
-      textAlign: "center",
-    },
-    infoCardContainerGridContainer: {
-      maxWidth: "90%",
-      margin: "auto",
-      padding: "20px",
-      height: "auto",
-    },
-    infoCardContainerCardContent: {
-      minHeight: "280px",
-    },
-    infoCardContainerGenrePills: {
-      backgroundColor: theme.primary.main,
-      color: theme.text.primary,
-    },
-    infoCardMainLoaderText: {
-      color: theme.text.primary,
+      border: `1px solid ${theme.text.primary}`,
+      marginLeft: "0.5rem",
     },
   };
 };
