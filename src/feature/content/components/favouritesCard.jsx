@@ -19,7 +19,7 @@ const FavoriteEpisodes = () => {
   const [error, setError] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortDateOrder, setSortDateOrder] = useState("asc");
-  const [publicUrl, setPublicUrl] = useState(""); // State to hold the generated public URL
+  const [publicUrl, setPublicUrl] = useState("");
 
   const theme = useTheme();
   const style = styles(theme);
@@ -58,15 +58,10 @@ const FavoriteEpisodes = () => {
   }, [userId]);
 
   const generatePublicUrl = () => {
-    // Generate a unique identifier for the user's favorites (you can use userId)
-    const userIdParam = userId ? `userId=${userId}` : "";
-    // Construct the public URL with the query parameter
-    const url = `https://podysseyapp.netlify.app/content/favourites?${userIdParam}`;
-    // Set the public URL state with the generated URL
+    const url = `https://podysseyapp.netlify.app/content/favourites`;
     setPublicUrl(url);
   };
 
-  // Function to remove favorite
   const removeFavorite = async (episodeId) => {
     try {
       const { error } = await supabase

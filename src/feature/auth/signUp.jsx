@@ -46,7 +46,7 @@ const SignUp = () => {
         setSuccess(true);
         setTimeout(() => {
           navigate("/auth/login");
-        }, 2000); // 2-second delay before navigating
+        }, 2000);
       }
     } catch (error) {
       console.error("Signup error:", error.message);
@@ -113,7 +113,7 @@ const SignUp = () => {
         </Typography>
       )}
       {success && (
-        <Typography variant="subtitle1" color="success">
+        <Typography variant="subtitle1" color="white">
           Signup successful! Redirecting to login...
         </Typography>
       )}

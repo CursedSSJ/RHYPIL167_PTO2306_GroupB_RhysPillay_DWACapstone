@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import {
-  CircularProgress,
   Typography,
   Container,
   Card,
@@ -205,7 +204,7 @@ const InfoCard = () => {
           label="Filter Podcasts"
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          disabled={!!selectedGenre} // Disable input when a genre is selected
+          disabled={!!selectedGenre}
         />
         <Button
           sx={style.infoCardContainerButton}

@@ -23,8 +23,8 @@ const DataCard = ({ seasons, updated }) => {
   const [userId, setUserId] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState(null);
   const [playbackData, setPlaybackData] = useState([]);
-  const [favorites, setFavorites] = useState({}); // State to track favorite episodes
-  const [audioTime, setaudioTime] = useState({}); // State to track favorite episodes
+  const [favorites, setFavorites] = useState({});
+  const [audioTime, setaudioTime] = useState({});
 
   const theme = useTheme();
   const style = styles(theme);
@@ -47,8 +47,6 @@ const DataCard = ({ seasons, updated }) => {
         console.error("Error fetching favorite episodes:", error);
         return;
       }
-
-      console.log("data: ", data);
 
       if (data) {
         const favoriteEpisodes = {};
@@ -109,8 +107,6 @@ const DataCard = ({ seasons, updated }) => {
         return;
       }
 
-      console.log("data: ", data);
-
       if (data) {
         const audioTime = {};
         data.forEach((episode) => {
@@ -124,8 +120,6 @@ const DataCard = ({ seasons, updated }) => {
   }, []);
 
   const handleAudioTimeUpdate = async (season, episode, currentTime) => {
-    console.log("Updating playback position:", currentTime);
-
     const newAudio = !audioTime[currentTime];
 
     const updatedAudioTime = { ...audioTime };
@@ -135,7 +129,6 @@ const DataCard = ({ seasons, updated }) => {
     if (!newAudio) {
       await supabase.from("audio_access").delete().eq("title", episode.title);
     } else {
-      // Save the current playback position to the database
       await supabase.from("audio_access").upsert([
         {
           user_id: userId,
@@ -148,7 +141,6 @@ const DataCard = ({ seasons, updated }) => {
     }
   };
 
-  // Function to handle metadata loaded event for each audio element
   const handleMetadataLoaded = (episodeTitle) => (e) => {
     const savedTime = audioTime[episodeTitle];
     if (savedTime !== undefined) {

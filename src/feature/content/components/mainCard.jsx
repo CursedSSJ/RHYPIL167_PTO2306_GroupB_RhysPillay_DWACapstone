@@ -32,7 +32,7 @@ const MainCard = () => {
           throw new Error(`Error fetching podcast data: ${response.status}`);
         }
         const data = await response.json();
-        console.log("podcast data: ", data);
+
         setPodcast(data);
       } catch (error) {
         setError(error.message);
